@@ -20,7 +20,6 @@ public partial class VnStockproxxDbContext : DbContext
     public virtual DbSet<Post> Posts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=localhost;Database=VnStockproxx;User Id=sa;Password=abc123456;Trusted_Connection=false;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,7 +36,11 @@ public partial class VnStockproxxDbContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.ToTable("Post");
+            entity.ToTable("Post", tb =>
+                {
+                    tb.HasTrigger("Post_ForUpdate");
+                    tb.HasTrigger("trg_UpdateUpdatedDate");
+                });
 
             entity.HasIndex(e => e.CateId, "IX_Post_CateId");
 
@@ -45,6 +48,10 @@ public partial class VnStockproxxDbContext : DbContext
                 .HasMaxLength(299)
                 .UseCollation("Vietnamese_CI_AS")
                 .HasColumnName("content");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("createdDate");
             entity.Property(e => e.Image).HasMaxLength(299);
             entity.Property(e => e.Teaser)
                 .HasMaxLength(299)
@@ -54,6 +61,10 @@ public partial class VnStockproxxDbContext : DbContext
                 .HasMaxLength(100)
                 .UseCollation("Vietnamese_CI_AS")
                 .HasColumnName("title");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime")
+                .HasColumnName("updatedDate");
             entity.Property(e => e.ViewCount)
                 .HasMaxLength(255)
                 .IsUnicode(false)

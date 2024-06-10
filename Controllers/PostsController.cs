@@ -4,41 +4,41 @@ using VnStockproxx.Models;
 
 namespace VnStockproxx.Controllers
 {
-    public class CategoriesController : Controller
+    public class PostsController : Controller
     {
-        private readonly CateRepository _cateRepo;
+        private readonly PostRepository _postRepo;
 
-        public CategoriesController(VnStockproxxDbContext context)
+        public PostsController(VnStockproxxDbContext context)
         {
-            this._cateRepo = new CateRepository(context);
+            this._postRepo = new PostRepository(context);
         }
 
-        // GET: Categories
+        // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _cateRepo.GetAll());
+            return View(await _postRepo.GetAll());
         }
 
-        // GET: Categories/Create
+        // GET: Posts/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: Posts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create(Post post)
         {
             if (ModelState.IsValid)
             {
-                await _cateRepo.Add(category);
+                await _postRepo.Add(post);
                 return RedirectToAction(nameof(Index));
             }
-            return View(category);
+            return View(post);
         }
 
-        // GET: Categories/Edit/5
+        // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -46,7 +46,7 @@ namespace VnStockproxx.Controllers
                 return NotFound();
             }
 
-            var category = await _cateRepo.FindById(id.Value);
+            var category = await _postRepo.FindById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -55,9 +55,9 @@ namespace VnStockproxx.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Category category)
+        public async Task<IActionResult> Edit(int id, Post post)
         {
-            if (id != category.Id)
+            if (id != post.Id)
             {
                 return NotFound();
             }
@@ -66,11 +66,11 @@ namespace VnStockproxx.Controllers
             {
                 try
                 {
-                    await _cateRepo.Update(category);
+                    await _postRepo.Update(post);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!PostExists(post.Id))
                     {
                         return NotFound();
                     }
@@ -83,7 +83,24 @@ namespace VnStockproxx.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: Categories/Delete/5
+        //GET: Posts/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var post = await _postRepo.FindById(id.Value);
+            if (post == null)
+            {
+                return NotFound();
+            }
+
+            return View(post);
+        }
+
+        // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -91,32 +108,32 @@ namespace VnStockproxx.Controllers
                 return NotFound();
             }
 
-            var category = await _cateRepo.FindById(id.Value);
-            if (category == null)
+            var post = await _postRepo.FindById(id.Value);
+            if (post == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(post);
         }
 
-        // POST: Categories/Delete/5
+        // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _cateRepo.FindById(id);
-            if (category == null)
+            var post = await _postRepo.FindById(id);
+            if (post == null)
             {
                 return NotFound();
             }
-            await _cateRepo.Remove(category);
+            await _postRepo.Remove(post);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool PostExists(int id)
         {
-            return _cateRepo.Exist(id);
+            return _postRepo.Exist(id);
         }
     }
 }

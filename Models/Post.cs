@@ -19,5 +19,9 @@ public partial class Post
 
     public string Image { get; set; } = null!;
 
+    public DateTime? CreatedDate { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
     public virtual Category? Cate { get; set; }
 }
