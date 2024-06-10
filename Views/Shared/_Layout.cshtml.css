@@ -51,3 +51,7 @@ button.accept-policy {
     width: 210px;
     height: 22px;
 }
+.main {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
