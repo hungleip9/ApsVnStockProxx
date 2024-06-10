@@ -58,8 +58,20 @@
 .p-2 {
     padding: 0.5rem;
 }
+.pr-2 {
+    padding-right: 0.5rem;
+}
+.pl-2 {
+    padding-left: 0.5rem;
+}
 .m-2 {
     margin: 0.5rem;
+}
+.mr-2 {
+    margin-right: 0.5rem;
+}
+.ml-2 {
+    margin-left: 0.5rem;
 }
 .grow {
     flex-grow: 1;

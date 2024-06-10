@@ -12,43 +12,37 @@ namespace VnStockproxx.Controllers
         {
             _logger = logger;
         }
-
-        public IActionResult Index()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
+        public ViewResult Index()
         {
             return View();
         }
         [Route("ChungKhoan")]
-        public async Task<ViewResult> ChungKhoan()
+        public ViewResult ChungKhoan()
         {
             return View();
         }
         [Route("BatDongSan")]
-        public async Task<ViewResult> BatDongSan()
+        public ViewResult BatDongSan()
         {
             return View();
         }
         [Route("TaiChinh")]
-        public async Task<ViewResult> TaiChinh()
+        public ViewResult TaiChinh()
         {
             return View();
         }
         [Route("GiaiTri")]
-        public async Task<ViewResult> GiaiTri()
+        public ViewResult GiaiTri()
         {
             return View();
         }
         [Route("GioiThieu")]
-        public async Task<ViewResult> GioiThieu()
+        public ViewResult GioiThieu()
         {
             return View();
         }
         [Route("LienHe")]
-        public async Task<ViewResult> LienHe()
+        public ViewResult LienHe()
         {
             return View();
         }

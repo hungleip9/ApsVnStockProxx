@@ -1,4 +1,31 @@
 ﻿@{
     ViewData["Title"] = "Giải trí";
 }
-<div>Giai tri</div>
+<div class="w-full h-full">
+    <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="borderC">1</div>
+            </div>
+            <div class="carousel-item">
+                <div class="borderC">2</div>
+            </div>
+            <div class="carousel-item">
+                <div class="borderC">3</div>
+            </div>
+        </div>
+        <div class="flex flex-row justify-end">
+            <div class="mr-2" data-bs-target="#carouselExample"
+                 data-bs-slide="prev">
+                <i class="bi bi-arrow-left-circle-fill"
+                   style="font-size: 24px;"></i>
+            </div>
+            <div data-bs-target="#carouselExample"
+                 data-bs-slide="next">
+                <i class="bi bi-arrow-right-circle-fill"
+                   style="font-size: 24px;"></i>
+            </div>
+        </div>
+    </div>
+
+</div>
