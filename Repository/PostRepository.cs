@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using VnStockproxx.Models;
 
 namespace VnStockproxx
@@ -25,7 +27,13 @@ namespace VnStockproxx
 
         public async Task<Post> FindById(int id)
         {
-            Post entity = await context.Posts.FindAsync(id);
+            var entity = await context.Posts.FindAsync(id);
+            if (entity == null)
+            {
+                return entity;
+            }
+            entity.ViewCount += 1;
+            await context.SaveChangesAsync();
             return entity;
         }
 
@@ -47,9 +55,11 @@ namespace VnStockproxx
             {
                 newdata.Title = entity.Title;
                 newdata.Content = entity.Content;
-                newdata.Teaser = entity.Teaser;
+                newdata.ImageContent = entity.ImageContent;
                 newdata.CateId = entity.CateId;
                 newdata.Image = entity.Image;
+                newdata.CreatedBy = entity.CreatedBy;
+                newdata.Tag = entity.Tag;
                 await context.SaveChangesAsync();
             }
         }

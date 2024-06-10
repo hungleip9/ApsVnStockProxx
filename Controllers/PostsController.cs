@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using VnStockproxx.Models;
 
@@ -7,21 +8,39 @@ namespace VnStockproxx.Controllers
     public class PostsController : Controller
     {
         private readonly PostRepository _postRepo;
+        private readonly CateRepository _cateRepo;
 
         public PostsController(VnStockproxxDbContext context)
         {
             this._postRepo = new PostRepository(context);
+            this._cateRepo = new CateRepository(context);
         }
 
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            return View(await _postRepo.GetAll());
+            var categories = await _cateRepo.GetAll();
+            var posts = await _postRepo.GetAll();
+            var qr = from post in posts
+                     join category in categories on post.CateId equals category.Id
+                     select new
+                     {
+                         Id = post.Id,
+                         Title = post.Title,
+                         ViewCount = post.ViewCount,
+                         CreatedDate = post.CreatedDate,
+                         UpdatedDate = post.UpdatedDate,
+                         CategoryName = category.CategoryName
+                     };
+            ViewBag.PostsWithCategory = qr.ToList();
+            return View();
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            var category = await _cateRepo.GetAll();
+            ViewData["CateId"] = new SelectList(category, "Id", "CategoryName");
             return View();
         }
 
@@ -45,13 +64,14 @@ namespace VnStockproxx.Controllers
             {
                 return NotFound();
             }
-
-            var category = await _postRepo.FindById(id.Value);
-            if (category == null)
+            var post = await _postRepo.FindById(id.Value);
+            if (post == null)
             {
                 return NotFound();
             }
-            return View(category);
+            var category = await _cateRepo.GetAll();
+            ViewData["CateId"] = new SelectList(category, "Id", "CategoryName");
+            return View(post);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

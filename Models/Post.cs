@@ -9,11 +9,11 @@ public partial class Post
 
     public string? Title { get; set; }
 
-    public string? Content { get; set; }
+    public string Content { get; set; } = null!;
 
-    public string? Teaser { get; set; }
+    public string ImageContent { get; set; } = null!;
 
-    public string? ViewCount { get; set; }
+    public int ViewCount { get; set; }
 
     public int? CateId { get; set; }
 
@@ -22,6 +22,10 @@ public partial class Post
     public DateTime? CreatedDate { get; set; }
 
     public DateTime? UpdatedDate { get; set; }
+
+    public string? CreatedBy { get; set; }
+
+    public string Tag { get; set; } = null!;
 
     public virtual Category? Cate { get; set; }
 }

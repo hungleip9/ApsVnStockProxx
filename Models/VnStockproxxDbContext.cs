@@ -20,7 +20,8 @@ public partial class VnStockproxxDbContext : DbContext
     public virtual DbSet<Post> Posts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=VnStockproxx;User Id=sa;Password=abc123456;Trusted_Connection=false;TrustServerCertificate=True");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=VnStockproxx;Trusted_Connection=true;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,27 +37,28 @@ public partial class VnStockproxxDbContext : DbContext
 
         modelBuilder.Entity<Post>(entity =>
         {
-            entity.ToTable("Post", tb =>
-                {
-                    tb.HasTrigger("Post_ForUpdate");
-                    tb.HasTrigger("trg_UpdateUpdatedDate");
-                });
+            entity.ToTable("Post");
 
             entity.HasIndex(e => e.CateId, "IX_Post_CateId");
 
             entity.Property(e => e.Content)
-                .HasMaxLength(299)
                 .UseCollation("Vietnamese_CI_AS")
                 .HasColumnName("content");
+            entity.Property(e => e.CreatedBy)
+                .HasMaxLength(299)
+                .HasColumnName("createdBy");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("createdDate");
             entity.Property(e => e.Image).HasMaxLength(299);
-            entity.Property(e => e.Teaser)
+            entity.Property(e => e.ImageContent)
                 .HasMaxLength(299)
                 .UseCollation("Vietnamese_CI_AS")
-                .HasColumnName("teaser");
+                .HasColumnName("imageContent");
+            entity.Property(e => e.Tag)
+                .HasMaxLength(299)
+                .HasColumnName("tag");
             entity.Property(e => e.Title)
                 .HasMaxLength(100)
                 .UseCollation("Vietnamese_CI_AS")
@@ -65,10 +67,7 @@ public partial class VnStockproxxDbContext : DbContext
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime")
                 .HasColumnName("updatedDate");
-            entity.Property(e => e.ViewCount)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("viewCount");
+            entity.Property(e => e.ViewCount).HasColumnName("viewCount");
 
             entity.HasOne(d => d.Cate).WithMany(p => p.Posts)
                 .HasForeignKey(d => d.CateId)
