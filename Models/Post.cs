@@ -17,5 +17,7 @@ public partial class Post
 
     public int? CateId { get; set; }
 
+    public string Image { get; set; } = null!;
+
     public virtual Category? Cate { get; set; }
 }
