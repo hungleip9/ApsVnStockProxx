@@ -18,22 +18,9 @@ namespace VnStockproxx.Controllers
         {
             var categories = await _cateRepo.GetAll();
             var posts = await _postRepo.GetAll();
-            var lstNoiBat = from post in posts
-                     join category in categories on post.CateId equals category.Id
-                     where category.Name == "Tin nổi bật"
-                     select new
-                     {
-                         Id = post.Id,
-                         Title = post.Title,
-                         Image = post.Image,
-                         ViewCount = post.ViewCount,
-                         CreatedDate = post.CreatedDate,
-                         UpdatedDate = post.UpdatedDate,
-                         CategoryName = category.Name
-                     };
-            var lstMoi = from post in posts
+            var data = from post in posts
                     join category in categories on post.CateId equals category.Id
-                    where category.Name == "Tin mới"
+                    where category.Name == "Tin mới" || category.Name == "Tin nổi bật"
                     select new
                     {
                         Id = post.Id,
@@ -44,8 +31,7 @@ namespace VnStockproxx.Controllers
                         UpdatedDate = post.UpdatedDate,
                         CategoryName = category.Name
                     };
-            ViewBag.lstNoiBat = lstNoiBat.ToList();
-            ViewBag.lstMoi = lstMoi.ToList();
+            ViewBag.Posts = data.ToList();
             return View();
         }
         [Route("ChungKhoan")]

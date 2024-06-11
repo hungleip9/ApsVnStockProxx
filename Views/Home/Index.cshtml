@@ -1,12 +1,13 @@
 ﻿@{
-    var lstNoiBat = ViewBag.lstNoiBat;
-    var lstMoi = ViewBag.lstMoi;
+    var posts = (IEnumerable<dynamic>)ViewBag.Posts;
+    var tinMoi = posts.Where(p => p.CategoryName == "Tin mới");
+    var tinNoiBat = posts.Where(p => p.CategoryName == "Tin nổi bật");
 }
 <div class="w-full h-full overflow-auto trang-chu">
     <div class="font-bold mb-2"><u>Tin nổi bật</u></div>
     <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner">
-            @foreach (var item in lstNoiBat)
+            @foreach (var item in tinNoiBat)
             {
 
                 <div class="new flex flex-col carousel-item">
@@ -32,7 +33,7 @@
     <div class="font-bold mb-2"><u>Tin mới</u></div>
     <div id="carouselExample" class="carousel slide">
         <div class="carousel-inner">
-            @foreach (var item in lstMoi)
+            @foreach (var item in tinMoi)
             {
 
                 <div class="new flex flex-col">
