@@ -20,14 +20,14 @@ namespace VnStockproxx
 
         public bool Exist(int id)
         {
-            Post entity = context.Posts.Find(id);
+            Post entity = context.Post.Find(id);
             if (entity != null) return true;
             return false;
         }
 
         public async Task<Post> FindById(int id)
         {
-            var entity = await context.Posts.FindAsync(id);
+            var entity = await context.Post.FindAsync(id);
             if (entity == null)
             {
                 return entity;
@@ -39,18 +39,18 @@ namespace VnStockproxx
 
         public async Task<List<Post>> GetAll()
         {
-            return await context.Posts.ToListAsync();
+            return await context.Post.ToListAsync();
         }
 
         public async Task Remove(Post entity)
         {
-            context.Posts.Remove(entity);
+            context.Post.Remove(entity);
             await context.SaveChangesAsync();
         }
 
         public async Task Update(Post entity)
         {
-            var newdata = await context.Posts.FindAsync(entity.Id);
+            var newdata = await context.Post.FindAsync(entity.Id);
             if (newdata is not null)
             {
                 newdata.Title = entity.Title;
@@ -59,7 +59,6 @@ namespace VnStockproxx
                 newdata.CateId = entity.CateId;
                 newdata.Image = entity.Image;
                 newdata.CreatedBy = entity.CreatedBy;
-                newdata.Tag = entity.Tag;
                 await context.SaveChangesAsync();
             }
         }

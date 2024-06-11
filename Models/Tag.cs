@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace VnStockproxx.Models;
 
-public partial class Category
+public partial class Tag
 {
     public int Id { get; set; }
 
     public string? Name { get; set; }
 
-    public virtual ICollection<Post> Post { get; set; } = new List<Post>();
+    public virtual ICollection<Post> IdPost { get; set; } = new List<Post>();
 }

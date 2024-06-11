@@ -20,7 +20,7 @@ namespace VnStockproxx.Controllers
             var posts = await _postRepo.GetAll();
             var lstNoiBat = from post in posts
                      join category in categories on post.CateId equals category.Id
-                     where category.CategoryName == "Tin nổi bật"
+                     where category.Name == "Tin nổi bật"
                      select new
                      {
                          Id = post.Id,
@@ -29,11 +29,11 @@ namespace VnStockproxx.Controllers
                          ViewCount = post.ViewCount,
                          CreatedDate = post.CreatedDate,
                          UpdatedDate = post.UpdatedDate,
-                         CategoryName = category.CategoryName
+                         CategoryName = category.Name
                      };
             var lstMoi = from post in posts
                     join category in categories on post.CateId equals category.Id
-                    where category.CategoryName == "Tin mới"
+                    where category.Name == "Tin mới"
                     select new
                     {
                         Id = post.Id,
@@ -42,7 +42,7 @@ namespace VnStockproxx.Controllers
                         ViewCount = post.ViewCount,
                         CreatedDate = post.CreatedDate,
                         UpdatedDate = post.UpdatedDate,
-                        CategoryName = category.CategoryName
+                        CategoryName = category.Name
                     };
             ViewBag.lstNoiBat = lstNoiBat.ToList();
             ViewBag.lstMoi = lstMoi.ToList();

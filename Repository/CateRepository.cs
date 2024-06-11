@@ -18,34 +18,34 @@ namespace VnStockproxx
 
         public bool Exist(int id)
         {
-            Category entity = context.Categories.Find(id);
+            Category entity = context.Category.Find(id);
             if (entity != null) return true;
             return false;
         }
 
         public async Task<Category> FindById(int id)
         {
-            Category entity = await context.Categories.FindAsync(id);
+            Category entity = await context.Category.FindAsync(id);
             return entity;
         }
 
         public async Task<List<Category>> GetAll()
         {
-            return await context.Categories.ToListAsync();
+            return await context.Category.ToListAsync();
         }
 
         public async Task Remove(Category entity)
         {
-            context.Categories.Remove(entity);
+            context.Category.Remove(entity);
             await context.SaveChangesAsync();
         }
 
         public async Task Update(Category entity)
         {
-            var newdata = await context.Categories.FindAsync(entity.Id);
+            var newdata = await context.Category.FindAsync(entity.Id);
             if (newdata is not null)
             {
-                newdata.CategoryName = entity.CategoryName;
+                newdata.Name = entity.Name;
                 await context.SaveChangesAsync();
             }
         }

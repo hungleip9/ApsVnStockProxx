@@ -25,7 +25,7 @@ public partial class Post
 
     public string? CreatedBy { get; set; }
 
-    public string Tag { get; set; } = null!;
-
     public virtual Category? Cate { get; set; }
+
+    public virtual ICollection<Tag> IdTag { get; set; } = new List<Tag>();
 }

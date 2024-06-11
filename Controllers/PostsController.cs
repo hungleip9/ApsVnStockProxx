@@ -30,7 +30,7 @@ namespace VnStockproxx.Controllers
                          ViewCount = post.ViewCount,
                          CreatedDate = post.CreatedDate,
                          UpdatedDate = post.UpdatedDate,
-                         CategoryName = category.CategoryName
+                         CategoryName = category.Name
                      };
             ViewBag.PostsWithCategory = qr.ToList();
             return View();
