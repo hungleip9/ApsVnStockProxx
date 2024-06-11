@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using VnStockproxx.Models;
 
@@ -6,14 +6,46 @@ namespace VnStockproxx.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly PostRepository _postRepo;
+        private readonly CateRepository _cateRepo;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(VnStockproxxDbContext context)
         {
-            _logger = logger;
+            this._postRepo = new PostRepository(context);
+            this._cateRepo = new CateRepository(context);
         }
-        public ViewResult Index()
+        public async Task<IActionResult> Index()
         {
+            var categories = await _cateRepo.GetAll();
+            var posts = await _postRepo.GetAll();
+            var lstNoiBat = from post in posts
+                     join category in categories on post.CateId equals category.Id
+                     where category.CategoryName == "Tin nổi bật"
+                     select new
+                     {
+                         Id = post.Id,
+                         Title = post.Title,
+                         Image = post.Image,
+                         ViewCount = post.ViewCount,
+                         CreatedDate = post.CreatedDate,
+                         UpdatedDate = post.UpdatedDate,
+                         CategoryName = category.CategoryName
+                     };
+            var lstMoi = from post in posts
+                    join category in categories on post.CateId equals category.Id
+                    where category.CategoryName == "Tin mới"
+                    select new
+                    {
+                        Id = post.Id,
+                        Title = post.Title,
+                        Image = post.Image,
+                        ViewCount = post.ViewCount,
+                        CreatedDate = post.CreatedDate,
+                        UpdatedDate = post.UpdatedDate,
+                        CategoryName = category.CategoryName
+                    };
+            ViewBag.lstNoiBat = lstNoiBat.ToList();
+            ViewBag.lstMoi = lstMoi.ToList();
             return View();
         }
         [Route("ChungKhoan")]

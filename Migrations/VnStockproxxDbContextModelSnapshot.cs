@@ -53,10 +53,15 @@ namespace VnStockproxx.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .HasMaxLength(299)
-                        .HasColumnType("nvarchar(299)")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .HasColumnName("content")
                         .UseCollation("Vietnamese_CI_AS");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(299)
+                        .HasColumnType("nvarchar(299)")
+                        .HasColumnName("createdBy");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
@@ -69,11 +74,18 @@ namespace VnStockproxx.Migrations
                         .HasMaxLength(299)
                         .HasColumnType("nvarchar(299)");
 
-                    b.Property<string>("Teaser")
+                    b.Property<string>("ImageContent")
+                        .IsRequired()
                         .HasMaxLength(299)
                         .HasColumnType("nvarchar(299)")
-                        .HasColumnName("teaser")
+                        .HasColumnName("imageContent")
                         .UseCollation("Vietnamese_CI_AS");
+
+                    b.Property<string>("Tag")
+                        .IsRequired()
+                        .HasMaxLength(299)
+                        .HasColumnType("nvarchar(299)")
+                        .HasColumnName("tag");
 
                     b.Property<string>("Title")
                         .HasMaxLength(100)
@@ -87,24 +99,15 @@ namespace VnStockproxx.Migrations
                         .HasColumnName("updatedDate")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<string>("ViewCount")
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                    b.Property<int>("ViewCount")
+                        .HasColumnType("int")
                         .HasColumnName("viewCount");
 
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "CateId" }, "IX_Post_CateId");
 
-                    b.ToTable("Post", null, t =>
-                        {
-                            t.HasTrigger("Post_ForUpdate");
-
-                            t.HasTrigger("trg_UpdateUpdatedDate");
-                        });
-
-                    b.HasAnnotation("SqlServer:UseSqlOutputClause", false);
+                    b.ToTable("Post", (string)null);
                 });
 
             modelBuilder.Entity("VnStockproxx.Models.Post", b =>

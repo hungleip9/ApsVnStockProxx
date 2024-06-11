@@ -31,13 +31,15 @@ namespace VnStockproxx.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true, collation: "Vietnamese_CI_AS"),
-                    content = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: true, collation: "Vietnamese_CI_AS"),
-                    teaser = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: true, collation: "Vietnamese_CI_AS"),
-                    viewCount = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
+                    content = table.Column<string>(type: "nvarchar(max)", nullable: false, collation: "Vietnamese_CI_AS"),
+                    imageContent = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: false, collation: "Vietnamese_CI_AS"),
+                    viewCount = table.Column<int>(type: "int", nullable: false),
                     CateId = table.Column<int>(type: "int", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: false),
                     createdDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    updatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())")
+                    updatedDate = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
+                    createdBy = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: true),
+                    tag = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: false)
                 },
                 constraints: table =>
                 {
