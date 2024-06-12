@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using VnStockproxx.Models;
 
 namespace VnStockproxx.Controllers
@@ -9,11 +11,15 @@ namespace VnStockproxx.Controllers
     {
         private readonly PostRepository _postRepo;
         private readonly CateRepository _cateRepo;
+        private readonly TagRepository _tagRepo;
+        private readonly VnStockproxxDbContext _context;
 
         public PostsController(VnStockproxxDbContext context)
         {
             this._postRepo = new PostRepository(context);
             this._cateRepo = new CateRepository(context);
+            this._tagRepo = new TagRepository(context);
+            this._context = context;
         }
 
         // GET: Posts
@@ -23,7 +29,7 @@ namespace VnStockproxx.Controllers
             var posts = await _postRepo.GetAll();
             var qr = from post in posts
                      join category in categories on post.CateId equals category.Id
-                     select new
+                     select new ListPostHome
                      {
                          Id = post.Id,
                          Title = post.Title,
@@ -32,15 +38,16 @@ namespace VnStockproxx.Controllers
                          UpdatedDate = post.UpdatedDate,
                          CategoryName = category.Name
                      };
-            ViewBag.PostsWithCategory = qr.ToList();
-            return View();
+            return View(qr.ToList());
         }
 
         // GET: Posts/Create
         public async Task<IActionResult> Create()
         {
             var category = await _cateRepo.GetAll();
-            ViewData["CateId"] = new SelectList(category, "Id", "CategoryName");
+            var tag = await _tagRepo.GetAll();
+            ViewData["CateId"] = new SelectList(category, "Id", "Name");
+            ViewData["IdTag"] = new SelectList(tag, "Id", "Name");
             return View();
         }
 
@@ -51,7 +58,18 @@ namespace VnStockproxx.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _postRepo.Add(post);
+                var Tags = await _tagRepo.GetAll();
+                var idtag = Request.Form["IdTag"];
+                var selectedTags = await Tags.Where(tag => idtag.Select(p => p.Id).Contains(tag.Id)).ToListAsync();
+                var data = new Post();
+                data.Title = post.Title;
+                data.Content = post.Content;
+                data.Image = post.Image;
+                data.ImageContent = post.ImageContent;
+                data.CreatedBy = post.CreatedBy;
+                data.CateId = post.CateId;
+                data.IdTag = selectedTags;
+                await _postRepo.Add(data);
                 return RedirectToAction(nameof(Index));
             }
             return View(post);
@@ -70,7 +88,7 @@ namespace VnStockproxx.Controllers
                 return NotFound();
             }
             var category = await _cateRepo.GetAll();
-            ViewData["CateId"] = new SelectList(category, "Id", "CategoryName");
+            ViewData["CateId"] = new SelectList(category, "Id", "Name");
             return View(post);
         }
         [HttpPost]
@@ -106,18 +124,20 @@ namespace VnStockproxx.Controllers
         //GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+            //if (id == null)
+            //{
+            //    return NotFound();
+            //}
+            //var Tags = await _tagRepo.GetAll();
+            ////var post = await _postRepo.GetAll().Where(e => e.);
+            //var selectedTags = Tags.Where(tag => post.IdTag.Select(p => p.Id).Contains(tag.Id)).ToList();
+            //if (post == null)
+            //{
+            //    return NotFound();
+            //}
 
-            var post = await _postRepo.FindById(id.Value);
-            if (post == null)
-            {
-                return NotFound();
-            }
-
-            return View(post);
+            //return View(post);
         }
 
         // GET: Posts/Delete/5

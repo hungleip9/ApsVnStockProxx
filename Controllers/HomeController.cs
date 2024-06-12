@@ -21,7 +21,7 @@ namespace VnStockproxx.Controllers
             var data = from post in posts
                     join category in categories on post.CateId equals category.Id
                     where category.Name == "Tin mới" || category.Name == "Tin nổi bật"
-                    select new
+                    select new ListPostHome
                     {
                         Id = post.Id,
                         Title = post.Title,
@@ -31,8 +31,7 @@ namespace VnStockproxx.Controllers
                         UpdatedDate = post.UpdatedDate,
                         CategoryName = category.Name
                     };
-            ViewBag.Posts = data.ToList();
-            return View();
+            return View(data.ToList());
         }
         [Route("ChungKhoan")]
         public ViewResult ChungKhoan()

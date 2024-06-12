@@ -1,9 +1,9 @@
-﻿@{
+﻿@model List<ListPostHome>
+@{
     ViewData["Title"] = "Index";
-    var postsWithCategory = ViewBag.PostsWithCategory;
 }
 
-<h1>Index</h1>
+<h1>Index - Post</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -20,7 +20,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in postsWithCategory)
+        @foreach (var item in Model)
         {
         <tr>
             <td>@item.Title</td>
