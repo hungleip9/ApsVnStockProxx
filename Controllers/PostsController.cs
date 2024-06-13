@@ -25,11 +25,11 @@ namespace VnStockproxx.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var categories = await _cateRepo.GetAll();
-            var posts = await _postRepo.GetAll();
+            var categories = await _cateRepo.GetAll().ToListAsync();
+            var posts = await _postRepo.GetAll().ToListAsync();
             var qr = from post in posts
                      join category in categories on post.CateId equals category.Id
-                     select new ListPostHome
+                     select new Post
                      {
                          Id = post.Id,
                          Title = post.Title,
@@ -44,8 +44,8 @@ namespace VnStockproxx.Controllers
         // GET: Posts/Create
         public async Task<IActionResult> Create()
         {
-            var category = await _cateRepo.GetAll();
-            var tag = await _tagRepo.GetAll();
+            var category = await _cateRepo.GetAll().ToListAsync();
+            var tag = await _tagRepo.GetAll().ToListAsync();
             ViewData["CateId"] = new SelectList(category, "Id", "Name");
             ViewData["IdTag"] = new SelectList(tag, "Id", "Name");
             return View();
@@ -58,17 +58,15 @@ namespace VnStockproxx.Controllers
         {
             if (ModelState.IsValid)
             {
-                var Tags = await _tagRepo.GetAll();
-                var idtag = Request.Form["IdTag"];
-                var selectedTags = await Tags.Where(tag => idtag.Select(p => p.Id).Contains(tag.Id)).ToListAsync();
+                var ArrIdTagString = Request.Form["IdTag"];
+                int[] ArrIdTagInt = ArrIdTagString.Select(n => Convert.ToInt32(n)).ToArray();
+                var IdTag = await _tagRepo.GetAll().Where(tag => ArrIdTagInt.Contains(tag.Id)).ToListAsync();
                 var data = new Post();
-                data.Title = post.Title;
-                data.Content = post.Content;
-                data.Image = post.Image;
-                data.ImageContent = post.ImageContent;
-                data.CreatedBy = post.CreatedBy;
-                data.CateId = post.CateId;
-                data.IdTag = selectedTags;
+
+                // copy từ post vào data
+                post.CopyPropertiesTo(data);
+
+                data.IdTag = IdTag;
                 await _postRepo.Add(data);
                 return RedirectToAction(nameof(Index));
             }
@@ -76,19 +74,25 @@ namespace VnStockproxx.Controllers
         }
 
         // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-            var post = await _postRepo.FindById(id.Value);
+            var post = await _postRepo.GetAll().Include(p => p.IdTag)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
             if (post == null)
             {
                 return NotFound();
             }
-            var category = await _cateRepo.GetAll();
+            var IdTag = post.IdTag.Select(p => p.Id).ToList();
+            post.ListIdTagInt = IdTag;
+            var category = await _cateRepo.GetAll().ToListAsync();
+            var tag = await _tagRepo.GetAll().ToListAsync();
             ViewData["CateId"] = new SelectList(category, "Id", "Name");
+            ViewData["IdTag"] = new SelectList(tag, "Id", "Name");
             return View(post);
         }
         [HttpPost]
@@ -104,7 +108,21 @@ namespace VnStockproxx.Controllers
             {
                 try
                 {
-                    await _postRepo.Update(post);
+                    var idtag = Request.Form["IdTag"];
+                    int[] idtagInt = idtag.Select(n => Convert.ToInt32(n)).ToArray();
+                    var IdTag = await _tagRepo.GetAll().Where(tag => idtagInt.Contains(tag.Id)).ToListAsync();
+
+                    var data = new Post();
+                    data.IdTag.Clear();
+                    data.Title = post.Title;
+                    data.Content = post.Content;
+                    data.ImageContent = post.ImageContent;
+                    data.CateId = post.CateId;
+                    data.Image = post.Image;
+                    data.CreatedBy = post.CreatedBy;
+                    data.IdTag = IdTag;
+
+                    await _postRepo.Update(data);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -122,22 +140,21 @@ namespace VnStockproxx.Controllers
         }
 
         //GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            return NotFound();
-            //if (id == null)
-            //{
-            //    return NotFound();
-            //}
-            //var Tags = await _tagRepo.GetAll();
-            ////var post = await _postRepo.GetAll().Where(e => e.);
-            //var selectedTags = Tags.Where(tag => post.IdTag.Select(p => p.Id).Contains(tag.Id)).ToList();
-            //if (post == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //return View(post);
+            if (id == null)
+            {
+                return NotFound();
+            }
+            
+            var post = await _postRepo.GetAll().Include(p => p.IdTag)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
+            if (post == null)
+            {
+                return NotFound();
+            }
+            return View(post);
         }
 
         // GET: Posts/Delete/5

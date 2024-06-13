@@ -16,7 +16,7 @@ namespace VnStockproxx.Controllers
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _cateRepo.GetAll());
+            return View(await _cateRepo.GetAll().ToListAsync());
         }
 
         // GET: Categories/Create

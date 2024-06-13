@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using VnStockproxx.Models;
 
@@ -16,12 +17,12 @@ namespace VnStockproxx.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var categories = await _cateRepo.GetAll();
-            var posts = await _postRepo.GetAll();
+            var categories = await _cateRepo.GetAll().ToListAsync();
+            var posts = await _postRepo.GetAll().ToListAsync();
             var data = from post in posts
                     join category in categories on post.CateId equals category.Id
                     where category.Name == "Tin mới" || category.Name == "Tin nổi bật"
-                    select new ListPostHome
+                    select new Post
                     {
                         Id = post.Id,
                         Title = post.Title,

@@ -7,6 +7,6 @@
         Task Update(T entity);
         Task Remove(T entity);
         Task<T> FindById(int id);
-        Task<List<T>> GetAll();
+        IQueryable<T> GetAll();
     }
 }

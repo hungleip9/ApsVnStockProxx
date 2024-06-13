@@ -36,10 +36,9 @@ namespace VnStockproxx
             await context.SaveChangesAsync();
             return entity;
         }
-
-        public async Task<List<Post>> GetAll()
+        public IQueryable<Post> GetAll()
         {
-            return await context.Post.ToListAsync();
+            return context.Post.AsQueryable<Post>();
         }
 
         public async Task Remove(Post entity)
@@ -50,17 +49,9 @@ namespace VnStockproxx
 
         public async Task Update(Post entity)
         {
-            var newdata = await context.Post.FindAsync(entity.Id);
-            if (newdata is not null)
-            {
-                newdata.Title = entity.Title;
-                newdata.Content = entity.Content;
-                newdata.ImageContent = entity.ImageContent;
-                newdata.CateId = entity.CateId;
-                newdata.Image = entity.Image;
-                newdata.CreatedBy = entity.CreatedBy;
-                await context.SaveChangesAsync();
-            }
+            if (entity == null) return;
+            context.Update(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VnStockproxx.Models;
-
+﻿namespace VnStockproxx.Models;
 public partial class Post
 {
     public int Id { get; set; }

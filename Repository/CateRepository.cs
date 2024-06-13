@@ -28,10 +28,9 @@ namespace VnStockproxx
             Category entity = await context.Category.FindAsync(id);
             return entity;
         }
-
-        public async Task<List<Category>> GetAll()
+        public IQueryable<Category> GetAll()
         {
-            return await context.Category.ToListAsync();
+            return context.Category.AsQueryable<Category>();
         }
 
         public async Task Remove(Category entity)

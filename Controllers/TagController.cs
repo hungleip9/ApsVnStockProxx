@@ -17,7 +17,7 @@ namespace VnStockproxx.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var data = await _tagRepo.GetAll();
+            var data = await _tagRepo.GetAll().ToListAsync();
             return View(data);
         }
 
