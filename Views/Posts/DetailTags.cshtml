@@ -1,0 +1,13 @@
+﻿@model Post[]
+
+@{
+    ViewData["Title"] = "DetailTags";
+}
+ @foreach(var post in Model)
+ {
+     <div>
+        @{
+           Html.RenderPartial("DetailPost", post);
+        }
+     </div>
+ }

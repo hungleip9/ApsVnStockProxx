@@ -38,15 +38,11 @@ namespace VnStockproxx
             context.Category.Remove(entity);
             await context.SaveChangesAsync();
         }
-
         public async Task Update(Category entity)
         {
-            var newdata = await context.Category.FindAsync(entity.Id);
-            if (newdata is not null)
-            {
-                newdata.Name = entity.Name;
-                await context.SaveChangesAsync();
-            }
+            if (entity == null) return;
+            context.Update(entity);
+            await context.SaveChangesAsync();
         }
     }
 }

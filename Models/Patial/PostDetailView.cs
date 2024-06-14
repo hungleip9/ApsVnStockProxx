@@ -7,6 +7,5 @@ public partial class Post
     public List<int> ListIdTagInt { get; set; } = new();
 
     [NotMapped]
-    public string CategoryName { get; set; } = null!;
-
+    public string? CategoryName { get; set; }
 }

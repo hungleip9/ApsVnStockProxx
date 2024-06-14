@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using VnStockproxx.Models;
 
 namespace VnStockproxx.Controllers
@@ -32,7 +33,11 @@ namespace VnStockproxx.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _cateRepo.Add(category);
+                var data = new Category();
+                // copy từ post vào data
+                category.CopyPropertiesTo(data);
+                data.NameMap = ConvertViToEn.ViToEn(category.Name);
+                await _cateRepo.Add(data);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -66,7 +71,12 @@ namespace VnStockproxx.Controllers
             {
                 try
                 {
-                    await _cateRepo.Update(category);
+                    var data = new Category();
+                    // copy từ post vào data
+                    category.CopyPropertiesTo(data);
+                    data.NameMap = ConvertViToEn.ViToEn(category.Name);
+
+                    await _cateRepo.Update(data);
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -4,7 +4,7 @@
     var tinMoi = Model.Where(p => p.CategoryName == "Tin mới");
     var tinNoiBat = Model.Where(p => p.CategoryName == "Tin nổi bật");
 }
-<div class="w-full h-full trang-chu">
+<div class="w-full h-full trang-chu overflow-auto">
     <div class="font-bold mb-2"><u>Tin nổi bật</u></div>
     <div class="flex flex-row content-center overflow-auto">
         @foreach (var item in tinNoiBat)
@@ -45,6 +45,7 @@
 </div>
 <style lang="scss" scoped>
     .trang-chu {
+        
         .new {
             width: 262px;
             height: 270px;

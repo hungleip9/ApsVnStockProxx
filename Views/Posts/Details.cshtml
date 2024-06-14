@@ -3,18 +3,9 @@
 @{
     ViewData["Title"] = "Details";
 }
-<h4>@Model.Title</h4>
-<p>@Model.Content</p>
-<div class="box-img flex justify-center content-center">
-    <img src="@Model.ImageContent" />
-</div>
-<p class="text-right">@Model.CreatedBy</p>
-<div class="box-tag flex content-center">
-    @foreach(var item in Model.IdTag.ToList())
-    {
-        <a class="tag cursor-pointer">#@item.Name</a>
-    }
-</div>
+@{
+    Html.RenderPartial("DetailPost", Model);
+}
 
 <style lang="scss" scoped>
     .box-img {

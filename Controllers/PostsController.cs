@@ -33,12 +33,13 @@ namespace VnStockproxx.Controllers
                      {
                          Id = post.Id,
                          Title = post.Title,
+                         Image = post.Image,
                          ViewCount = post.ViewCount,
                          CreatedDate = post.CreatedDate,
                          UpdatedDate = post.UpdatedDate,
                          CategoryName = category.Name
                      };
-            return View(qr.ToList());
+            return View(qr.Reverse().ToList());
         }
 
         // GET: Posts/Create
@@ -65,10 +66,13 @@ namespace VnStockproxx.Controllers
 
                 // copy từ post vào data
                 post.CopyPropertiesTo(data);
-
                 data.IdTag = IdTag;
                 await _postRepo.Add(data);
                 return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                Log.LogError(ModelState);
             }
             return View(post);
         }
@@ -136,6 +140,10 @@ namespace VnStockproxx.Controllers
                     }
                 }
             }
+            else
+            {
+                Log.LogError(ModelState);
+            }
             return RedirectToAction(nameof(Index));
         }
 
@@ -155,6 +163,24 @@ namespace VnStockproxx.Controllers
                 return NotFound();
             }
             return View(post);
+        }
+
+        //GET: Posts/DetailTags/5
+        public async Task<IActionResult> DetailTags(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var Posts = await _postRepo.GetAll().Include(p => p.IdTag)
+                .Where(p => p.IdTag.Select(tag => tag.Id).Contains(id))
+                .ToArrayAsync();
+            if (Posts == null)
+            {
+                return NotFound();
+            }
+            return View(Posts);
         }
 
         // GET: Posts/Delete/5

@@ -32,6 +32,7 @@ public partial class VnStockproxxDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .UseCollation("Vietnamese_CI_AS");
+            entity.Property(e => e.NameMap).HasMaxLength(100);
         });
 
         modelBuilder.Entity<Post>(entity =>

@@ -90,3 +90,6 @@ a {
 .cursor-pointer {
     cursor: pointer;
 }
+th, td {
+    padding: 10px;
+}

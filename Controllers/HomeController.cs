@@ -9,7 +9,6 @@ namespace VnStockproxx.Controllers
     {
         private readonly PostRepository _postRepo;
         private readonly CateRepository _cateRepo;
-
         public HomeController(VnStockproxxDbContext context)
         {
             this._postRepo = new PostRepository(context);
@@ -21,7 +20,7 @@ namespace VnStockproxx.Controllers
             var posts = await _postRepo.GetAll().ToListAsync();
             var data = from post in posts
                     join category in categories on post.CateId equals category.Id
-                    where category.Name == "Tin mới" || category.Name == "Tin nổi bật"
+                    where category.NameMap == "tin_moi" || category.NameMap == "tin_noi_bat"
                     select new Post
                     {
                         Id = post.Id,

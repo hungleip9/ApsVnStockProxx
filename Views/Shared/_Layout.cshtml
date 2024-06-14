@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/VnStockproxx.styles.css" asp-append-version="true" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
 </head>
-<body class="">
+<body class="flex flex-col" style="height: 100vh">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
@@ -55,20 +55,12 @@
             </div>
         </nav>
     </header>
-    <div style="height: calc(100vh - 60px - 80px); padding:0 250px; overflow">
-        <main class="main w-full h-full">
-            @RenderBody()
-        </main>
+    <div class="flex-1" style="padding:0 250px;height: calc(100vh - 100px);">
+        @RenderBody()
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - VnStockproxx
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+            @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
