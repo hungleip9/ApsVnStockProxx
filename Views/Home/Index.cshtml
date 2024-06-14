@@ -1,12 +1,16 @@
 ﻿@model List<Post>
 @{
-    // var posts = (IEnumerable<dynamic>)Model;
     var tinMoi = Model.Where(p => p.CategoryName == "Tin mới");
     var tinNoiBat = Model.Where(p => p.CategoryName == "Tin nổi bật");
 }
 <div class="w-full h-full trang-chu overflow-auto">
     <div class="font-bold mb-2"><u>Tin nổi bật</u></div>
     <div class="flex flex-row content-center overflow-auto">
+        @if (tinNoiBat.Count() == 0)
+        {
+            <p>Không có dữ liệu!</p>
+
+        }
         @foreach (var item in tinNoiBat)
         {
             <a href="/Posts/Details/@item.Id">
@@ -23,9 +27,14 @@
             </a>
         }
     </div>
-    
+
     <div class="font-bold mb-2"><u>Tin mới</u></div>
     <div class="flex flex-row content-center overflow-auto">
+        @if (tinMoi.Count() == 0)
+        {
+            <p>Không có dữ liệu!</p>
+
+        }
         @foreach (var item in tinMoi)
         {
             <a href="/Posts/Details/@item.Id">
@@ -45,7 +54,7 @@
 </div>
 <style lang="scss" scoped>
     .trang-chu {
-        
+
         .new {
             width: 262px;
             height: 270px;

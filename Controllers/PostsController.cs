@@ -25,21 +25,8 @@ namespace VnStockproxx.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var categories = await _cateRepo.GetAll().ToListAsync();
-            var posts = await _postRepo.GetAll().ToListAsync();
-            var qr = from post in posts
-                     join category in categories on post.CateId equals category.Id
-                     select new Post
-                     {
-                         Id = post.Id,
-                         Title = post.Title,
-                         Image = post.Image,
-                         ViewCount = post.ViewCount,
-                         CreatedDate = post.CreatedDate,
-                         UpdatedDate = post.UpdatedDate,
-                         CategoryName = category.Name
-                     };
-            return View(qr.Reverse().ToList());
+            var post = await _postRepo.GetAll().Include(p => p.Cate).OrderByDescending(x => x.UpdatedDate).ToListAsync();
+            return View(post);
         }
 
         // GET: Posts/Create
@@ -112,18 +99,20 @@ namespace VnStockproxx.Controllers
             {
                 try
                 {
-                    var idtag = Request.Form["IdTag"];
-                    int[] idtagInt = idtag.Select(n => Convert.ToInt32(n)).ToArray();
-                    var IdTag = await _tagRepo.GetAll().Where(tag => idtagInt.Contains(tag.Id)).ToListAsync();
-
-                    var data = new Post();
+                    var data = await _postRepo.GetAll().Include(p => p.IdTag)
+                        .Where(e => e.Id == id)
+                        .FirstOrDefaultAsync();
+                    if (data == null)
+                    {
+                        return NotFound();
+                    }
                     data.IdTag.Clear();
-                    data.Title = post.Title;
-                    data.Content = post.Content;
-                    data.ImageContent = post.ImageContent;
-                    data.CateId = post.CateId;
-                    data.Image = post.Image;
-                    data.CreatedBy = post.CreatedBy;
+
+                    var ArrIdTagString = Request.Form["ListIdTagInt"];
+                    int[] ArrIdTagInt = ArrIdTagString.Select(n => Convert.ToInt32(n)).ToArray();
+                    var IdTag = await _tagRepo.GetAll().Where(tag => ArrIdTagInt.Contains(tag.Id)).ToListAsync();
+
+                    post.CopyPropertiesTo(data);
                     data.IdTag = IdTag;
 
                     await _postRepo.Update(data);

@@ -6,38 +6,54 @@
 
     <h1>Index - Post</h1>
     <p>
-        <a asp-action="Create">Create New</a>
+        <button class="btn-primary">
+            <a asp-action="Create">Create New</a>
+        </button>
     </p>
     <div class="box-table overflow-auto flex-1">
-        <table style="width:100%">
-            <tr>
-                <th style="min-width: 300px">Title</th>
-                <th style="min-width: 150px">Image</th>
-                <th>CategoryName</th>
-                <th class="text-center">ViewCount</th>
-                <th>CreatedDate</th>
-                <th>UpdatedDate</th>
-                <th>CategoryName</th>
-            </tr>
-            @foreach (var item in Model)
-            {
+        @if (Model.Count() == 0)
+        {
+            <p class="text-center">Không có dữ liệu!</p>
+        }
+        else
+        {
+            <table style="width:100%">
                 <tr>
-                    <td class="title"><a href="/Posts/Details/@item.Id">@item.Title</a></td>
-                    <td>
-                        <img class="w-100 h-100" src="@item.Image" />
-                    </td>
-                    <td>@item.CategoryName</td>
-                    <td class="text-center">@item.ViewCount</td>
-                    <td>@item.CreatedDate.ToCustomFormat()</td>
-                    <td>@item.UpdatedDate.ToCustomFormat()</td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
+                    <th style="min-width: 300px">Title</th>
+                    <th style="min-width: 150px">Image</th>
+                    <th>Category Name</th>
+                    <th class="text-center">View Count</th>
+                    <th>Created Date</th>
+                    <th>Updated Date</th>
                 </tr>
-            }
-        </table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td class="title"><a href="/Posts/Details/@item.Id">@item.Title</a></td>
+                        <td>
+                            <img class="box-img" src="@item.Image" />
+                        </td>
+                        <td>@item?.Cate?.Name</td>
+                        <td class="text-center">
+                            @if (item.ViewCount == null)
+                            {
+                               <span>0</span>
+                            }
+                            else {
+                                <span>@item.ViewCount</span>
+                            }
+                        </td>
+                        <td>@item.CreatedDate.ToCustomFormat()</td>
+                        <td>@item.UpdatedDate.ToCustomFormat()</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </table>
+        }
     </div>
 </div>
 <style scoped>
@@ -48,6 +64,11 @@
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+
+    .box-img {
+        width: 100px;
+        height: 100px;
     }
 
 </style>

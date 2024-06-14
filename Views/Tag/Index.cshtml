@@ -1,4 +1,4 @@
-﻿@model IEnumerable<VnStockproxx.Models.Tag>
+﻿@model List<Tag>
 
 @{
     ViewData["Title"] = "Index";
@@ -7,28 +7,37 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button class="btn-primary">
+        <a asp-action="Create">Create New Tag</a>
+    </button>
 </p>
-<table class="table">
-    <thead>
+@if (Model.Count() == 0)
+{
+    <p class="text-center">Không có dữ liệu!</p>
+}
+else
+{
+    <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Name
             </th>
             <th></th>
         </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                #@Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
+        <tbody>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        #@Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
-    </tbody>
-</table>

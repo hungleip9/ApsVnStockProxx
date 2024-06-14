@@ -36,9 +36,11 @@ namespace VnStockproxx.Controllers
                 var data = new Category();
                 // copy từ post vào data
                 category.CopyPropertiesTo(data);
-                data.NameMap = ConvertViToEn.ViToEn(category.Name);
                 await _cateRepo.Add(data);
                 return RedirectToAction(nameof(Index));
+            } else
+            {
+                Log.LogError(ModelState);
             }
             return View(category);
         }
