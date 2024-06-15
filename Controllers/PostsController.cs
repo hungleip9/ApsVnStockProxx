@@ -112,8 +112,14 @@ namespace VnStockproxx.Controllers
                     int[] ArrIdTagInt = ArrIdTagString.Select(n => Convert.ToInt32(n)).ToArray();
                     var IdTag = await _tagRepo.GetAll().Where(tag => ArrIdTagInt.Contains(tag.Id)).ToListAsync();
 
-                    post.CopyPropertiesTo(data);
+                    data.Title = post.Title;
+                    data.Content = post.Content;
+                    data.Image = post.Image;
+                    data.ImageContent = post.ImageContent;
+                    data.CateId = post.CateId;
+                    data.CreatedBy = post.CreatedBy;
                     data.IdTag = IdTag;
+                    data.UpdatedDate = DateTime.Now;
 
                     await _postRepo.Update(data);
                 }

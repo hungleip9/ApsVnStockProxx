@@ -21,37 +21,7 @@
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/ChungKhoan">Chứng khoán</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/BatDongSan">Bất động sản</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/TaiChinh">Tài chính</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/GiaiTri">Giải trí</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/GioiThieu">Giới thiệu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/LienHe">Liên hệ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Categories">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Posts">Post</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" href="/Tag">Tag</a>
-                        </li>
-                    </ul>
-                </div>
+                @await Component.InvokeAsync("HeaderCategory")
             </div>
         </nav>
     </header>

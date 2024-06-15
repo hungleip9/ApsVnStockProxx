@@ -9,19 +9,24 @@ namespace VnStockproxx.Controllers
     {
         private readonly PostRepository _postRepo;
         private readonly CateRepository _cateRepo;
-        public HomeController(VnStockproxxDbContext context)
+        private readonly int IdTinMoi = 0;
+        private readonly int IdTinNoiBat = 0;
+        public HomeController(VnStockproxxDbContext context, IConfiguration configuration)
         {
             this._postRepo = new PostRepository(context);
             this._cateRepo = new CateRepository(context);
+
+            IdTinMoi = Int32.Parse(configuration["IdPost:TinMoi"]);
+            IdTinNoiBat = Int32.Parse(configuration["IdPost:TinNoiBat"]);
         }
-        public async Task<IActionResult> Index()
+            public async Task<IActionResult> Index()
         {
             var categories = await _cateRepo.GetAll().ToListAsync();
             var posts = await _postRepo.GetAll().ToListAsync();
             var data = from post in posts
                     join category in categories on post.CateId equals category.Id
-                    where category.NameMap == "tin_moi" || category.NameMap == "tin_noi_bat"
-                    select new Post
+                    where category.Id == IdTinMoi || category.Id == IdTinNoiBat
+                       select new Post
                     {
                         Id = post.Id,
                         Title = post.Title,
@@ -33,25 +38,12 @@ namespace VnStockproxx.Controllers
                     };
             return View(data.ToList());
         }
-        [Route("ChungKhoan")]
-        public ViewResult ChungKhoan()
+        [Route("{slug}/{id:int}")]
+        public async Task<ViewResult> ViewPost(int id)
         {
-            return View();
-        }
-        [Route("BatDongSan")]
-        public ViewResult BatDongSan()
-        {
-            return View();
-        }
-        [Route("TaiChinh")]
-        public ViewResult TaiChinh()
-        {
-            return View();
-        }
-        [Route("GiaiTri")]
-        public ViewResult GiaiTri()
-        {
-            return View();
+            //3 - chứng khoán
+            var posts = await _postRepo.GetAll().Include(p => p.Cate).Where(post => post.CateId == id).ToListAsync();
+            return View(posts);
         }
         [Route("GioiThieu")]
         public ViewResult GioiThieu()

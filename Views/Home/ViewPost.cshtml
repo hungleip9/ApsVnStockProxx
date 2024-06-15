@@ -1,0 +1,47 @@
+﻿@model List<Post>
+@{
+    ViewData["Title"] = "ViewPost";
+}
+<div class="row">
+    @if (Model.Count() == 0)
+    {
+        <p>Không có dữ liệu!</p>
+
+    }
+    @foreach (var item in Model)
+    {
+        <a class="col-sm-3 box-post" href="/Posts/Details/@item.Id">
+            <div class="new flex flex-col">
+                <div class="box-img">
+                    <img src="@item.Image" />
+                </div>
+                <div class="title">@item.Title</div>
+                <div class="text-right font12">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>@item.UpdatedDate.ToCustomFormat()</span>
+                </div>
+            </div>
+        </a>
+    }
+</div>
+<style lang="scss" scoped>
+    .box-post {
+        .new {
+            .box-img {
+                img {
+                    width: 262px;
+                    height: 164px;
+                }
+            }
+            .title {
+                font-weight: 700;
+                max-width: 260px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+</style>
