@@ -196,10 +196,12 @@ namespace VnStockproxx.Controllers
             var Posts = await _postRepo.GetAll().Include(p => p.IdTag)
                 .Where(p => p.IdTag.Select(tag => tag.Id).Contains(id))
                 .ToArrayAsync();
+            var NameTag = await _tagRepo.GetAll().Where(e => e.Id == id).Select(tag => tag.Name).FirstOrDefaultAsync();
             if (Posts == null)
             {
                 return NotFound();
             }
+            ViewBag.NameTag = NameTag;
             return View(Posts);
         }
 

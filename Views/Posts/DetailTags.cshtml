@@ -4,6 +4,7 @@
     ViewData["Title"] = "DetailTags";
 }
 <div class="w-full h-full">
+    <h1>#@ViewBag.NameTag</h1>
     @if (Model.Count() == 0)
     {
         <p>không có bài viết!</p>
@@ -14,10 +15,12 @@
             @foreach (var post in Model)
             {
                 <a class="p-2 col-sm-3" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
-                    <h4 class="text-ellipsis-line2">@post.Title</h4>
-                    <p class="text-ellipsis-line3">@post.Content</p>
-                    <div class="box-img flex justify-center content-center">
-                        <img src="@post.ImageContent" />
+                    <div class="border p-2 cursor-pointer">
+                        <h4 class="text-ellipsis-line2">@post.Title</h4>
+                        <p class="text-ellipsis-line3">@post.Content</p>
+                        <div class="box-img flex justify-center content-center">
+                            <img src="@post.ImageContent" />
+                        </div>
                     </div>
                 </a>
             }

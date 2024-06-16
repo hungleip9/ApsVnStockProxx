@@ -85,7 +85,7 @@
 a {
     color: unset;
     text-decoration: unset;
-    cursor: potainer;
+    cursor: unset;
 }
 .cursor-pointer {
     cursor: pointer;

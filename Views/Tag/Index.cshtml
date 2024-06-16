@@ -30,7 +30,7 @@ else
             {
                 <tr>
                     <td>
-                        #@Html.DisplayFor(modelItem => item.Name)
+                        <a class="cursor-pointer" asp-action="DetailTags" asp-controller="Posts" asp-route-id="@item.Id">#@item.Name</a>
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
