@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing.Printing;
 using System.Linq;
 using VnStockproxx.Models;
 
@@ -23,10 +24,34 @@ namespace VnStockproxx.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string IdCategory, int page = 1, int pageSize = 5)
         {
-            var post = await _postRepo.GetAll().Include(p => p.Cate).OrderByDescending(x => x.UpdatedDate).ToListAsync();
-            return View(post);
+            ViewBag.IdCategory = "";
+            // lấy dữ liệu đầy đủ Posts
+            var posts = await _postRepo.GetAll()
+                .Include(p => p.Cate)
+                .OrderByDescending(x => x.UpdatedDate)
+                .ToListAsync();
+
+            // filter theo category
+            var Categories = await _cateRepo.GetAll().ToListAsync();
+
+            if (IdCategory != null && IdCategory != "All")
+            {
+                posts = posts.Where(p => p.CateId == Int32.Parse(IdCategory)).ToList();
+                ViewBag.IdCategory = IdCategory;
+            }
+
+            // phân trang
+            int totalItems = posts.Count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
+            posts = posts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            ViewBag.Categories = Categories;
+            ViewBag.CurrentPage = page;
+            ViewBag.TotalPages = totalPages;
+            return View(posts);
         }
 
         // GET: Posts/Create

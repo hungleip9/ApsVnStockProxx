@@ -1,30 +1,16 @@
 ﻿@model Post
-@{
-    var Path = "#";
-    var NameClass = "box-img";
-    if (ViewBag.HideTag == true)
+<h4>@Model.Title</h4>
+<p>@Model.Content</p>
+<div class="box-img flex justify-center content-center">
+    <img src="@Model.ImageContent" />
+</div>
+<p class="text-right">@Model.CreatedBy</p>
+<div class="box-tag flex content-center">
+    @foreach (var item in Model.IdTag.ToList())
     {
-        Path = $"/Posts/Details/{Model.Id}";
-        NameClass = "box-img-mini";
+        <a class="tag cursor-pointer" href="/Posts/DetailTags/@item.Id">#@item.Name</a>
     }
-}
-<a href="@Path">
-    <h4>@Model.Title</h4>
-    <p>@Model.Content</p>
-    <div class="@NameClass flex justify-center content-center">
-        <img src="@Model.ImageContent" />
-    </div>
-    <p class="text-right">@Model.CreatedBy</p>
-    @if (ViewBag.HideTag == false)
-    {
-        <div class="box-tag flex content-center">
-            @foreach (var item in Model.IdTag.ToList())
-            {
-                <a class="tag cursor-pointer" href="/Posts/DetailTags/@item.Id">#@item.Name</a>
-            }
-        </div>
-    }
-</a>
+</div>
 <style lang="scss" scoped>
     .box-img {
 

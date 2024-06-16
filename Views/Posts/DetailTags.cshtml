@@ -10,16 +10,28 @@
     }
     else
     {
-        <div class="w-full h-full overflow-auto flex flex-row content-center justify-center">
+        <div class="w-full h-full overflow-auto row">
             @foreach (var post in Model)
             {
-                <div class="p-2">
-                    @{
-                        ViewBag.HideTag = true;
-                        Html.RenderPartial("DetailPost", post);
-                    }
-                </div>
+                <a class="p-2 col-sm-3" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                    <h4 class="text-ellipsis-line2">@post.Title</h4>
+                    <p class="text-ellipsis-line3">@post.Content</p>
+                    <div class="box-img flex justify-center content-center">
+                        <img src="@post.ImageContent" />
+                    </div>
+                </a>
             }
         </div>
     }
 </div>
+<style scoped>
+    .box-img {
+        img
+
+    {
+        width: 262px;
+        height: 164px;
+    }
+
+    }
+</style>
