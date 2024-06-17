@@ -92,10 +92,6 @@ namespace VnStockproxx.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var post = await _postRepo.GetAll().Include(p => p.IdTag)
                 .Where(e => e.Id == id)
                 .FirstOrDefaultAsync();
@@ -170,10 +166,6 @@ namespace VnStockproxx.Controllers
         //GET: Posts/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var post = await _postRepo.FindById(id);
             if (post == null)
             {
@@ -185,11 +177,6 @@ namespace VnStockproxx.Controllers
         //GET: Posts/DetailTags/5
         public async Task<IActionResult> DetailTags(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var Posts = await _postRepo.GetAll().Include(p => p.IdTag)
                 .Where(p => p.IdTag.Select(tag => tag.Id).Contains(id))
                 .ToArrayAsync();

@@ -22,7 +22,7 @@ namespace VnStockproxx.Controllers
         }
 
         // Get Tag/Create
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             return View();
         }

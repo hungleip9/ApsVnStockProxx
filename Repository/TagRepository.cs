@@ -18,17 +18,16 @@ namespace VnStockproxx
 
         public bool Exist(int id)
         {
-            Tag entity = context.Tag.Find(id);
+            var entity = context.Tag.Find(id);
             if (entity != null) return true;
             return false;
         }
 
-        public async Task<Tag> FindById(int id)
+        public async Task<Tag?> FindById(int id)
         {
             var entity = await context.Tag.AsQueryable()
                 .Where(e => e.Id == id)
                 .FirstOrDefaultAsync();
-            if (entity == null) return null;
             return entity;
         }
         public IQueryable<Tag> GetAll()

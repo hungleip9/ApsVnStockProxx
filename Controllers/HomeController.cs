@@ -16,8 +16,8 @@ namespace VnStockproxx.Controllers
             this._postRepo = new PostRepository(context);
             this._cateRepo = new CateRepository(context);
 
-            IdTinMoi = Int32.Parse(configuration["IdPost:TinMoi"]);
-            IdTinNoiBat = Int32.Parse(configuration["IdPost:TinNoiBat"]);
+            IdTinMoi = Int32.Parse(configuration["IdPost:TinMoi"] ?? "0");
+            IdTinNoiBat = Int32.Parse(configuration["IdPost:TinNoiBat"] ?? "0");
         }
             public async Task<IActionResult> Index()
         {

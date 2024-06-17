@@ -43,27 +43,27 @@
                         <td>@((currentPage - 1) * Model.Count() + item.index + 1)</td>
                         <td class="text-ellipsis-line2"
                             style="line-height: 2!important;">
-                            <a class="cursor-pointer" href="/Posts/Details/@item.value.Id">@item.value.Title</a>
+                            <a class="cursor-pointer" href="/Posts/Details/@item.value?.Id">@item.value?.Title</a>
                         </td>
                         <td>
-                            <img class="box-img" src="@item.value.Image" />
+                            <img class="box-img" src="@item.value?.Image" />
                         </td>
                         <td>@item.value?.Cate?.Name</td>
                         <td class="text-center">
-                            @if (item.value.ViewCount == null)
+                            @if (item.value?.ViewCount == null)
                             {
                                 <span>0</span>
                             }
                             else
                             {
-                                <span>@item.value.ViewCount</span>
+                                <span>@item.value?.ViewCount</span>
                             }
                         </td>
-                        <td>@item.value.CreatedDate.ToCustomFormat()</td>
-                        <td>@item.value.UpdatedDate.ToCustomFormat()</td>
+                        <td>@item.value?.CreatedDate.ToCustomFormat()</td>
+                        <td>@item.value?.UpdatedDate.ToCustomFormat()</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.value.Id">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.value.Id">Delete</a>
+                            <a asp-action="Edit" asp-route-id="@item.value?.Id">Edit</a> |
+                            <a asp-action="Delete" asp-route-id="@item.value?.Id">Delete</a>
                         </td>
                     </tr>
                 }
@@ -107,4 +107,4 @@
         text-overflow: ellipsis;
     }
 
-    </sty >
+</style>

@@ -14,11 +14,10 @@ namespace VnStockproxx {
         public HeaderCategory(VnStockproxxDbContext context, IConfiguration configuration)
         {
             this._cateRepo = new CateRepository(context);
-
-            ChungKhoan = Int32.Parse(configuration["IdPost:ChungKhoan"]);
-            BatDongSan = Int32.Parse(configuration["IdPost:BatDongSan"]);
-            TaiChinh = Int32.Parse(configuration["IdPost:TaiChinh"]);
-            GiaiTri = Int32.Parse(configuration["IdPost:GiaiTri"]);
+            ChungKhoan = Int32.Parse(configuration["IdPost:ChungKhoan"] ?? "0");
+            BatDongSan = Int32.Parse(configuration["IdPost:BatDongSan"] ?? "0");
+            TaiChinh = Int32.Parse(configuration["IdPost:TaiChinh"] ?? "0");
+            GiaiTri = Int32.Parse(configuration["IdPost:GiaiTri"] ?? "0");
         }
         public async Task<IViewComponentResult> InvokeAsync(VnStockproxxDbContext context)
         {

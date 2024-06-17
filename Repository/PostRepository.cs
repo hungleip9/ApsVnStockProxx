@@ -20,7 +20,7 @@ namespace VnStockproxx
 
         public bool Exist(int id)
         {
-            Post entity = context.Post.Find(id);
+            var entity = context.Post.Find(id);
             if (entity != null) return true;
             return false;
         }

@@ -18,14 +18,14 @@ namespace VnStockproxx
 
         public bool Exist(int id)
         {
-            Category entity = context.Category.Find(id);
+            var entity = context.Category.Find(id);
             if (entity != null) return true;
             return false;
         }
 
-        public async Task<Category> FindById(int id)
+        public async Task<Category?> FindById(int id)
         {
-            Category entity = await context.Category.FindAsync(id);
+            var entity = await context.Category.FindAsync(id);
             return entity;
         }
         public IQueryable<Category> GetAll()
