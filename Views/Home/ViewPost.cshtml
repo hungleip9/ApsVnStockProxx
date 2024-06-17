@@ -10,7 +10,7 @@
     }
     @foreach (var item in Model)
     {
-        <a class="col-sm-3 box-post" href="/Posts/Details/@item.Id">
+        <a class="col-sm-4 box-post" href="/Posts/Details/@item.Id">
             <div class="new flex flex-col">
                 <div class="box-img">
                     <img src="@item.Image" />
@@ -29,8 +29,8 @@
         .new {
             .box-img {
                 img {
-                    width: 262px;
-                    height: 164px;
+                    width: 240px;
+                    height: 150px;
                 }
             }
             .title {

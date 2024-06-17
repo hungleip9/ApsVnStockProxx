@@ -25,7 +25,10 @@ namespace VnStockproxx
 
         public async Task<Tag> FindById(int id)
         {
-            Tag entity = await context.Tag.FindAsync(id);
+            var entity = await context.Tag.AsQueryable()
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
+            if (entity == null) return null;
             return entity;
         }
         public IQueryable<Tag> GetAll()

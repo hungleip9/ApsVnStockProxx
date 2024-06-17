@@ -27,12 +27,16 @@ namespace VnStockproxx
 
         public async Task<Post> FindById(int id)
         {
-            var entity = await context.Post.FindAsync(id);
+            var entity = await context.Post.AsQueryable()
+                .Include(p => p.IdTag)
+                .Where(e => e.Id == id)
+                .FirstOrDefaultAsync();
             if (entity == null)
             {
-                return entity;
+                return null;
             }
-            entity.ViewCount += 1;
+            entity.ViewCount = entity.ViewCount != null ? entity.ViewCount + 1 : 1;
+            context.Update(entity);
             await context.SaveChangesAsync();
             return entity;
         }

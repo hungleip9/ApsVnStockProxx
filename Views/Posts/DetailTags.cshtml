@@ -14,7 +14,7 @@
         <div class="w-full h-full overflow-auto row">
             @foreach (var post in Model)
             {
-                <a class="p-2 col-sm-3" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
+                <a class="p-2 col-sm-4" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
                     <div class="border p-2 cursor-pointer">
                         <h4 class="text-ellipsis-line2">@post.Title</h4>
                         <p class="text-ellipsis-line3">@post.Content</p>
@@ -32,8 +32,8 @@
         img
 
     {
-        width: 262px;
-        height: 164px;
+        width: 150px;
+        height: 150px;
     }
 
     }

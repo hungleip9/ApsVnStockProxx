@@ -22,6 +22,21 @@ namespace VnStockproxx.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.Property<int>("IdTag")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdPost")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdTag", "IdPost");
+
+                    b.HasIndex("IdPost");
+
+                    b.ToTable("PostTag");
+                });
+
             modelBuilder.Entity("VnStockproxx.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -30,15 +45,19 @@ namespace VnStockproxx.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("CategoryName")
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("categoryName")
                         .UseCollation("Vietnamese_CI_AS");
+
+                    b.Property<string>("NameMap")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category", (string)null);
+                    b.ToTable("Category");
                 });
 
             modelBuilder.Entity("VnStockproxx.Models.Post", b =>
@@ -53,67 +72,85 @@ namespace VnStockproxx.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)")
-                        .HasColumnName("content")
                         .UseCollation("Vietnamese_CI_AS");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(299)
-                        .HasColumnType("nvarchar(299)")
-                        .HasColumnName("createdBy");
+                        .HasColumnType("nvarchar(299)");
 
                     b.Property<DateTime?>("CreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("createdDate")
                         .HasDefaultValueSql("(getdate())");
 
                     b.Property<string>("Image")
-                        .IsRequired()
                         .HasMaxLength(299)
                         .HasColumnType("nvarchar(299)");
 
                     b.Property<string>("ImageContent")
-                        .IsRequired()
                         .HasMaxLength(299)
                         .HasColumnType("nvarchar(299)")
-                        .HasColumnName("imageContent")
                         .UseCollation("Vietnamese_CI_AS");
 
-                    b.Property<string>("Tag")
-                        .IsRequired()
-                        .HasMaxLength(299)
-                        .HasColumnType("nvarchar(299)")
-                        .HasColumnName("tag");
-
                     b.Property<string>("Title")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
                         .UseCollation("Vietnamese_CI_AS");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("updatedDate")
                         .HasDefaultValueSql("(getdate())");
 
-                    b.Property<int>("ViewCount")
-                        .HasColumnType("int")
-                        .HasColumnName("viewCount");
+                    b.Property<int?>("ViewCount")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "CateId" }, "IX_Post_CateId");
 
-                    b.ToTable("Post", (string)null);
+                    b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("VnStockproxx.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tag");
+                });
+
+            modelBuilder.Entity("PostTag", b =>
+                {
+                    b.HasOne("VnStockproxx.Models.Post", null)
+                        .WithMany()
+                        .HasForeignKey("IdPost")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostTag_Post");
+
+                    b.HasOne("VnStockproxx.Models.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("IdTag")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_PostTag_Tag");
                 });
 
             modelBuilder.Entity("VnStockproxx.Models.Post", b =>
                 {
                     b.HasOne("VnStockproxx.Models.Category", "Cate")
-                        .WithMany("Posts")
+                        .WithMany("Post")
                         .HasForeignKey("CateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_Post_Category");
@@ -123,7 +160,7 @@ namespace VnStockproxx.Migrations
 
             modelBuilder.Entity("VnStockproxx.Models.Category", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("Post");
                 });
 #pragma warning restore 612, 618
         }

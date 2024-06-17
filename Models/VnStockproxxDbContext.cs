@@ -22,7 +22,7 @@ public partial class VnStockproxxDbContext : DbContext
     public virtual DbSet<Tag> Tag { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=localhost;Database=VnStockproxx;User Id=sa;Password=abc123456;Trusted_Connection=true;TrustServerCertificate=True");
+        => optionsBuilder.UseSqlServer("Server=localhost;Database=VnStockproxx;User Id=sa;Password=abc123456;Trusted_Connection=false;TrustServerCertificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

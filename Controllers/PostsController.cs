@@ -174,10 +174,7 @@ namespace VnStockproxx.Controllers
             {
                 return NotFound();
             }
-            
-            var post = await _postRepo.GetAll().Include(p => p.IdTag)
-                .Where(e => e.Id == id)
-                .FirstOrDefaultAsync();
+            var post = await _postRepo.FindById(id);
             if (post == null)
             {
                 return NotFound();

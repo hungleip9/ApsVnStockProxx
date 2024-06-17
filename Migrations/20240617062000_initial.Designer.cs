@@ -12,7 +12,7 @@ using VnStockproxx.Models;
 namespace VnStockproxx.Migrations
 {
     [DbContext(typeof(VnStockproxxDbContext))]
-    [Migration("20240614134310_initial")]
+    [Migration("20240617062000_initial")]
     partial class initial
     {
         /// <inheritdoc />

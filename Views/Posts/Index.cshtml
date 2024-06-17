@@ -40,7 +40,7 @@
                 @foreach (var item in Model.Select((value, index) => new { index, value }))
                 {
                     <tr>
-                        <td>@(item.index + 1)</td>
+                        <td>@((currentPage - 1) * Model.Count() + item.index + 1)</td>
                         <td class="text-ellipsis-line2"
                             style="line-height: 2!important;">
                             <a class="cursor-pointer" href="/Posts/Details/@item.value.Id">@item.value.Title</a>
@@ -63,7 +63,6 @@
                         <td>@item.value.UpdatedDate.ToCustomFormat()</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.value.Id">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.value.Id">Details</a> |
                             <a asp-action="Delete" asp-route-id="@item.value.Id">Delete</a>
                         </td>
                     </tr>
@@ -71,24 +70,27 @@
             </table>
         }
     </div>
-    <div class="flex align-items-end justify-content-end">
-        <nav aria-label="Page navigation example">
-            <ul class="pagination">
-                <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1 })">Previous</a>
-                </li>
-                @for (int i = 1; i <= totalPages; i++)
-                {
-                    <li class="page-item @(i == currentPage ? "active" : "")">
-                        <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+    @if (Model.Count() > 0)
+    {
+        <div class="flex align-items-end justify-content-end">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination">
+                    <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+                        <a class="page-link cursor-pointer" href="@Url.Action("Index", new { page = currentPage - 1 })">Previous</a>
                     </li>
-                }
-                <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1 })">Next</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+                    @for (int i = 1; i <= totalPages; i++)
+                    {
+                        <li class="page-item @(i == currentPage ? "active" : "")">
+                            <a class="page-link cursor-pointer" href="@Url.Action("Index", new { page = i })">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+                        <a class="page-link cursor-pointer" href="@Url.Action("Index", new { page = currentPage + 1 })">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
 </div>
 <style scoped>
     .box-img {
