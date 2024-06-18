@@ -15,11 +15,10 @@
             @foreach (var post in Model)
             {
                 <a class="p-2 col-sm-4" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">
-                    <div class="border p-2 cursor-pointer">
-                        <h4 class="text-ellipsis-line2">@post.Title</h4>
-                        <p class="text-ellipsis-line3">@post.Content</p>
-                        <div class="box-img flex justify-center content-center">
-                            <img src="@post.ImageContent" />
+                    <div class="border p-2 cursor-pointer font12">
+                        <p class="text-ellipsis-line2 font18">@post.Title</p>
+                        <div class="flex justify-center">
+                            <img class="box-img" src="@post.Image" />
                         </div>
                     </div>
                 </a>
@@ -29,12 +28,7 @@
 </div>
 <style scoped>
     .box-img {
-        img
-
-    {
-        width: 150px;
+        width: 200px;
         height: 150px;
-    }
-
     }
 </style>

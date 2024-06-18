@@ -1,9 +1,9 @@
 ﻿@model Post
-<h4>@Model.Title</h4>
-<p>@Model.Content</p>
-<div class="box-img flex justify-center content-center">
-    <img src="@Model.ImageContent" />
+<div class="text-right">
+    <a asp-action="Edit" asp-controller="Posts" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
 </div>
+<h4>@Model.Title</h4>
+<p>@Html.Raw(Model.Content)</p>
 <p class="text-right">@Model.CreatedBy</p>
 <div class="box-tag flex content-center">
     @foreach (var item in Model.IdTag.ToList())

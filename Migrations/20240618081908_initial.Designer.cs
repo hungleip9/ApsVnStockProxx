@@ -12,7 +12,7 @@ using VnStockproxx.Models;
 namespace VnStockproxx.Migrations
 {
     [DbContext(typeof(VnStockproxxDbContext))]
-    [Migration("20240617062000_initial")]
+    [Migration("20240618081908_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -35,7 +35,7 @@ namespace VnStockproxx.Migrations
 
                     b.HasKey("IdTag", "IdPost");
 
-                    b.HasIndex("IdPost");
+                    b.HasIndex(new[] { "IdPost" }, "IX_PostTag_IdPost");
 
                     b.ToTable("PostTag");
                 });
@@ -90,11 +90,6 @@ namespace VnStockproxx.Migrations
                     b.Property<string>("Image")
                         .HasMaxLength(299)
                         .HasColumnType("nvarchar(299)");
-
-                    b.Property<string>("ImageContent")
-                        .HasMaxLength(299)
-                        .HasColumnType("nvarchar(299)")
-                        .UseCollation("Vietnamese_CI_AS");
 
                     b.Property<string>("Title")
                         .IsRequired()

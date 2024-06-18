@@ -11,8 +11,6 @@ public partial class Post
 
     public string? Content { get; set; }
 
-    public string? ImageContent { get; set; }
-
     public int? ViewCount { get; set; }
 
     public int? CateId { get; set; }

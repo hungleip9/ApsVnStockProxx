@@ -62,8 +62,8 @@
                         <td>@item.value?.CreatedDate.ToCustomFormat()</td>
                         <td>@item.value?.UpdatedDate.ToCustomFormat()</td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.value?.Id">Edit</a> |
-                            <a asp-action="Delete" asp-route-id="@item.value?.Id">Delete</a>
+                            <a class="cursor-pointer" asp-action="Edit" asp-route-id="@item.value?.Id">Edit</a> |
+                            <a class="cursor-pointer" asp-action="Delete" asp-route-id="@item.value?.Id">Delete</a>
                         </td>
                     </tr>
                 }

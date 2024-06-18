@@ -46,7 +46,6 @@ namespace VnStockproxx.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false, collation: "Vietnamese_CI_AS"),
                     Content = table.Column<string>(type: "nvarchar(max)", nullable: true, collation: "Vietnamese_CI_AS"),
-                    ImageContent = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: true, collation: "Vietnamese_CI_AS"),
                     ViewCount = table.Column<int>(type: "int", nullable: true),
                     CateId = table.Column<int>(type: "int", nullable: true),
                     Image = table.Column<string>(type: "nvarchar(299)", maxLength: 299, nullable: true),

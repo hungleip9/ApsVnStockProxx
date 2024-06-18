@@ -15,34 +15,20 @@
                 <textarea asp-for="Title" class="form-control" rows="3"></textarea>
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            @* <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control" rows="10"></textarea>
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div> *@
             <div class="form-group">
-                @Html.LabelFor(model => model.Content, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.TextAreaFor(model => model.Content, new { @class = "form-control", @rows = 10 })
-                    @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
-                </div>
+            <label asp-for="Content" class="control-label"></label>
+            <textarea id="tiny" asp-for="Content" class="form-control" rows="10"></textarea>
+            <span asp-validation-for="Content" class="text-danger"></span>
             </div>
-            <div class="flex flex-row content-center justify-between">
-                <div class="form-group w-50 mr-2">
-                    <label asp-for="Image" class="control-label"></label>
-                    <input asp-for="Image" class="form-control" />
-                    <span asp-validation-for="Image" class="text-danger"></span>
-                </div>
-                <div class="form-group flex-1">
-                    <label asp-for="ImageContent" class="control-label"></label>
-                    <input asp-for="ImageContent" class="form-control" />
-                    <span asp-validation-for="ImageContent" class="text-danger"></span>
-                </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
             </div>
             <div class="flex flex-row content-center justify-between">
                 <div class="form-group w-50 mr-2">
                     <label asp-for="CateId" class="control-label"></label>
-                    <select asp-for="CateId" class ="form-control" asp-items="ViewBag.CateId"></select>
+                    <select asp-for="CateId" class="form-control" asp-items="ViewBag.CateId"></select>
 
                     <label asp-for="CreatedBy" class="control-label"></label>
                     <input asp-for="CreatedBy" class="form-control" />
@@ -62,7 +48,9 @@
         </form>
     </div>
 </div>
-
-<div>
-</div>
-
+<script>
+    tinymce.init({
+        selector: '#mytextarea',
+        license_key: 'gpl'
+    });
+</script>

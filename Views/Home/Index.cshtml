@@ -13,7 +13,7 @@
         }
         @foreach (var item in tinNoiBat)
         {
-            <a href="/Posts/Details/@item.Id">
+            <a class="cursor-pointer" href="/Posts/Details/@item.Id">
                 <div class="new flex flex-col carousel-item">
                     <div class="box-img">
                         <img src="@item.Image" />
@@ -37,7 +37,7 @@
         }
         @foreach (var item in tinMoi)
         {
-            <a href="/Posts/Details/@item.Id">
+            <a class="cursor-pointer" href="/Posts/Details/@item.Id">
                 <div class="new flex flex-col">
                     <div class="box-img">
                         <img src="@item.Image" />

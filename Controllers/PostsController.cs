@@ -136,7 +136,6 @@ namespace VnStockproxx.Controllers
                     data.Title = post.Title;
                     data.Content = post.Content;
                     data.Image = post.Image;
-                    data.ImageContent = post.ImageContent;
                     data.CateId = post.CateId;
                     data.CreatedBy = post.CreatedBy;
                     data.IdTag = IdTag;
