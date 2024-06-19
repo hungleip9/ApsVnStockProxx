@@ -25,7 +25,7 @@ namespace VnStockproxx
 
         public async Task<Category?> FindById(int id)
         {
-            var entity = await context.Category.FindAsync(id);
+            var entity = await context.Category.AsQueryable().Where(e => e.Id == id).FirstOrDefaultAsync();
             return entity;
         }
         public IQueryable<Category> GetAll()

@@ -10,9 +10,9 @@ namespace VnStockproxx.Controllers
     {
         private readonly TagRepository _tagRepo;
 
-        public TagController(VnStockproxxDbContext context)
+        public TagController(TagRepository tagRepo)
         {
-            this._tagRepo = new TagRepository(context);
+            this._tagRepo = tagRepo;
         }
 
         public async Task<IActionResult> Index()

@@ -1,9 +1,6 @@
-﻿using Azure;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing.Printing;
-using System.Linq;
 using VnStockproxx.Models;
 
 namespace VnStockproxx.Controllers
@@ -13,14 +10,12 @@ namespace VnStockproxx.Controllers
         private readonly PostRepository _postRepo;
         private readonly CateRepository _cateRepo;
         private readonly TagRepository _tagRepo;
-        private readonly VnStockproxxDbContext _context;
 
-        public PostsController(VnStockproxxDbContext context)
+        public PostsController(PostRepository postRepo, CateRepository cateRepo, TagRepository tagRepo)
         {
-            this._postRepo = new PostRepository(context);
-            this._cateRepo = new CateRepository(context);
-            this._tagRepo = new TagRepository(context);
-            this._context = context;
+            this._postRepo = postRepo;
+            this._cateRepo = cateRepo;
+            this._tagRepo = tagRepo;
         }
 
         // GET: Posts
@@ -55,10 +50,15 @@ namespace VnStockproxx.Controllers
         }
 
         // GET: Posts/Create
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(string searching)
         {
+            var strSearch = searching == null ? "" : searching.Replace("+", " ");
             var category = await _cateRepo.GetAll().ToListAsync();
-            var tag = await _tagRepo.GetAll().ToListAsync();
+            var tag = await _tagRepo.GetAll()
+                .Where(t => t.Name.Contains(strSearch) )
+                .OrderBy(x => x.Name)
+                .Take(searching != null ? 10 :5)
+                .ToListAsync();
             ViewData["CateId"] = new SelectList(category, "Id", "Name");
             ViewData["IdTag"] = new SelectList(tag, "Id", "Name");
             return View();

@@ -6,7 +6,7 @@
         bool Exist(int id);
         Task Update(T entity);
         Task Remove(T entity);
-        Task<T> FindById(int id);
+        Task<T?> FindById(int id);
         IQueryable<T> GetAll();
     }
 }

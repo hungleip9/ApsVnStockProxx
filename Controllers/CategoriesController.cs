@@ -9,9 +9,9 @@ namespace VnStockproxx.Controllers
     {
         private readonly CateRepository _cateRepo;
 
-        public CategoriesController(VnStockproxxDbContext context)
+        public CategoriesController(CateRepository cateRepo)
         {
-            this._cateRepo = new CateRepository(context);
+            this._cateRepo = cateRepo;
         }
 
         // GET: Categories

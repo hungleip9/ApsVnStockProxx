@@ -9,15 +9,15 @@ namespace VnStockproxx.Controllers
     {
         private readonly PostRepository _postRepo;
         private readonly CateRepository _cateRepo;
-        private readonly int IdTinMoi = 0;
-        private readonly int IdTinNoiBat = 0;
-        public HomeController(VnStockproxxDbContext context, IConfiguration configuration)
+        private readonly int IdTinMoi;
+        private readonly int IdTinNoiBat;
+        public HomeController(PostRepository postRepo, CateRepository cateRepo, IConfiguration configuration)
         {
-            this._postRepo = new PostRepository(context);
-            this._cateRepo = new CateRepository(context);
+            this._postRepo = postRepo;
+            this._cateRepo = cateRepo;
 
-            IdTinMoi = Int32.Parse(configuration["IdPost:TinMoi"] ?? "0");
-            IdTinNoiBat = Int32.Parse(configuration["IdPost:TinNoiBat"] ?? "0");
+            IdTinMoi = Convert.ToInt32(configuration["IdPost:TinMoi"]);
+            IdTinNoiBat = Convert.ToInt32(configuration["IdPost:TinNoiBat"]);
         }
             public async Task<IActionResult> Index()
         {
