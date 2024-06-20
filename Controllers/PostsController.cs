@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using VnStockproxx.Models;
 
 namespace VnStockproxx.Controllers
@@ -21,11 +22,17 @@ namespace VnStockproxx.Controllers
         // GET: Posts
         public async Task<IActionResult> Index(string IdCategory, int page = 1, int pageSize = 5)
         {
+            var count = await _postRepo.GetAll().CountAsync();
+            // phân trang
+            int totalItems = count;
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+
             ViewBag.IdCategory = "";
             // lấy dữ liệu đầy đủ Posts
             var posts = await _postRepo.GetAll()
                 .Include(p => p.Cate)
                 .OrderByDescending(x => x.UpdatedDate)
+                .Skip((page - 1) * pageSize).Take(pageSize)
                 .ToListAsync();
 
             // filter theo category
@@ -33,15 +40,9 @@ namespace VnStockproxx.Controllers
 
             if (IdCategory != null && IdCategory != "All")
             {
-                posts = posts.Where(p => p.CateId == Int32.Parse(IdCategory)).ToList();
+                posts = posts.Where(p => p.CateId == Convert.ToInt32(IdCategory)).ToList();
                 ViewBag.IdCategory = IdCategory;
             }
-
-            // phân trang
-            int totalItems = posts.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-
-            posts = posts.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             ViewBag.Categories = Categories;
             ViewBag.CurrentPage = page;
@@ -50,14 +51,12 @@ namespace VnStockproxx.Controllers
         }
 
         // GET: Posts/Create
-        public async Task<IActionResult> Create(string searching)
+        public async Task<IActionResult> Create()
         {
-            var strSearch = searching == null ? "" : searching.Replace("+", " ");
             var category = await _cateRepo.GetAll().ToListAsync();
             var tag = await _tagRepo.GetAll()
-                .Where(t => t.Name.Contains(strSearch) )
                 .OrderBy(x => x.Name)
-                .Take(searching != null ? 10 :5)
+                .Take(5)
                 .ToListAsync();
             ViewData["CateId"] = new SelectList(category, "Id", "Name");
             ViewData["IdTag"] = new SelectList(tag, "Id", "Name");
@@ -222,6 +221,19 @@ namespace VnStockproxx.Controllers
         private bool PostExists(int id)
         {
             return _postRepo.Exist(id);
+        }
+        public async Task<JsonResult> GetListTag(string searching)
+        {
+            var strSearch = searching == null ? "" : searching.Replace("+", " ");
+            var tag = await _tagRepo.GetAll()
+                .Where(t => t.Name.Contains(strSearch))
+                .OrderBy(x => x.Name)
+                .Take(strSearch == null ? 100 : 5)
+                .ToListAsync();
+            return Json(new
+            {
+                data = new SelectList(tag, "Id", "Name")
+            });
         }
     }
 }

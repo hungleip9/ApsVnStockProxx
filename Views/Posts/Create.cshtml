@@ -3,26 +3,17 @@
 @{
     ViewData["Title"] = "Create";
 }
-
 <h1>Create - Post</h1>
 <hr />
 <div class="row">
     <div>
-        <div class="form-group">
-            @using (Html.BeginForm("Create", "Posts", FormMethod.Get))
-            {
-                <div class="flex flex-row">
-                    <div class="mr-2 flex justify-center align-center">Search Tag</div>
-                    @Html.TextBox("search", "", htmlAttributes: new { @class = "w-50 form-control" })
-                    <input type="submit" value="Search" class="btn btn-success" />
-                </div>
-            }
-        </div>
-        <div class="form-group">
-            <label asp-for="IdTag" class="control-label"></label>
-            <select asp-for="IdTag" class="form-control" asp-items="ViewBag.IdTag" multiple></select>
-        </div>
+        <input type="text" id="input-search" placeholder="Tìm kiếm Tag" />
+
         <form asp-action="Create">
+            <div class="form-group">
+                <label asp-for="IdTag" class="control-label"></label>
+                <select id="select-idtag" asp-for="IdTag" class="form-control" asp-items="ViewBag.IdTag" multiple></select>
+            </div>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
@@ -59,8 +50,35 @@
     </div>
 </div>
 <script>
-    tinymce.init({
-        selector: '#mytextarea',
-        license_key: 'gpl'
-    });
+    $(document).ready(function () {
+        function Contains(text_one, text_two) {
+            if (text_one.indexOf(text_two) != -1) return true
+        }
+        $("#input-search").keyup(function () {
+            var searching = $("#input-search").val();
+            var idtag = $("#select-idtag")
+            $.ajax({
+                url: "/Posts/GetListTag",
+                data: { searching: searching },
+                dataType: "json",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                success: function (response) {
+                    console.log('response.data: ', response.data)
+                    // Xóa tất cả các tùy chọn hiện tại
+                    idtag.empty();
+                    // Thêm các tùy chọn mới từ dữ liệu nhận được
+                    $.each(response.data, function (index, item) {
+                        idtag.append($('<option>', {
+                            value: item.value,
+                            text: item.text
+                        }));
+                    });
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        })
+    })
 </script>

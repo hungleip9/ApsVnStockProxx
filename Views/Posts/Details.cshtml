@@ -4,24 +4,5 @@
     ViewData["Title"] = "Details";
 }
 @{
-    Html.RenderPartial("DetailPost", Model);
+    <partial name="DetailPost" model="Model" />
 }
-
-<style lang="scss" scoped>
-    .box-img {
-
-        img {
-            width: 500px;
-            height: auto;
-        }
-    }
-    .box-tag {
-        .tag {
-           margin-right: 5px;
-           border: 1px solid black;
-           padding: 4px;
-           cursor: potainer;
-        }
-    }
-
-</style>

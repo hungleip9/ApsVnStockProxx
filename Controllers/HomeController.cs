@@ -22,21 +22,13 @@ namespace VnStockproxx.Controllers
             public async Task<IActionResult> Index()
         {
             var categories = await _cateRepo.GetAll().ToListAsync();
-            var posts = await _postRepo.GetAll().ToListAsync();
-            var data = from post in posts
-                    join category in categories on post.CateId equals category.Id
-                    where category.Id == IdTinMoi || category.Id == IdTinNoiBat
-                       select new Post
-                    {
-                        Id = post.Id,
-                        Title = post.Title,
-                        Image = post.Image,
-                        ViewCount = post.ViewCount,
-                        CreatedDate = post.CreatedDate,
-                        UpdatedDate = post.UpdatedDate,
-                        CategoryName = category.Name
-                    };
-            return View(data.ToList());
+            var posts = await _postRepo.GetAll()
+                .Include(p => p.Cate)
+                .Where(p => p.CateId == IdTinMoi || p.CateId == IdTinNoiBat)
+                .ToListAsync();
+            ViewData["IdTinMoi"] = IdTinMoi;
+            ViewData["IdTinNoiBat"] = IdTinNoiBat;
+            return View(posts);
         }
         [Route("{slug}/{id:int}")]
         public async Task<ViewResult> ViewPost(int id)
