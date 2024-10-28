@@ -12,8 +12,8 @@ using VnStockproxx.Models;
 namespace VnStockproxx.Migrations
 {
     [DbContext(typeof(VnStockproxxDbContext))]
-    [Migration("20240619041127_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20241028024800_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
